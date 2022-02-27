@@ -161,12 +161,27 @@ def add_books_window_fun():
 
 #function to delete book details from database
 def delete_books_fun():
-    pass
+
+    #connecting to database
+    book_conn = sqlite3.connect('books.db')
+    book_csr=book_conn.cursor()
+
+    #adding details to database
+    book_csr.execute("DELETE from book WHERE oid="+delete_book_no_box.get())
+
+    delete_book_no_box.delete(0, END)
+
+    #commiting changes
+    book_conn.commit()
+    #closing connection
+    book_conn.close()    
 
 
 
 #function to open delete books window
 def delete_books_window_fun():
+    global delete_book_no_box
+    
     delete_books_window=Toplevel()
 
     #label
@@ -177,7 +192,7 @@ def delete_books_window_fun():
     delete_book_no_box=Entry(delete_books_window, width=30)
 
     #button to delete books from database
-    delete_books_button=Button(delete_books_window, text="Delete", command=tmp)
+    delete_books_button=Button(delete_books_window, text="Delete", command=delete_books_fun)
 
     #grid layout
 
